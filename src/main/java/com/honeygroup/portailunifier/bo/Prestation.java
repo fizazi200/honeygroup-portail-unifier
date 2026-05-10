@@ -11,38 +11,44 @@ import java.math.BigDecimal;
 
 import enumeration.StatutPrestation;
 
+
 @Entity
-@Data
+@Table(name = "prestation")
+@Inheritance(strategy = InheritanceType.JOINED)
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Prestation {
 
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@EqualsAndHashCode.Include
+    @Column(name = "id_prestation")
     private Long id;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pole", nullable = false)
+    private Pole pole;
+
+  /*  @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_photo")
+    private Photo photo; */
 
     @NotBlank
     @Size(min = 3, max = 100)
-    @Column(nullable = false, length = 100)
-    private String titre;
+    @Column(name = "titre_service", nullable = false)
+    private String titreService;
+   
 
     @NotBlank
     @Size(min = 20, max = 2000)
     @Column(nullable = false, length = 2000)
     private String description;
 
-    @NotNull
-    @DecimalMin(value = "0.01")
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal prix;
-
-    @NotNull
-    @Min(1)
-    @Max(1440)
-    @Column(nullable = false)
-    private Integer duree; // en minutes
-
+    
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
