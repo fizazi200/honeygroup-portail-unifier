@@ -9,5 +9,4 @@ public class PoleResponse {
     private Long id;
     private String nom;
     private String description;
-    private int nombrePrestations;
 }
